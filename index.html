@@ -94,7 +94,19 @@
             return state;
         }
         }
-
+        function checkAndDispatch(store,action){
+            if(
+                action.type===ADD_TODO&&
+                action.todo.title.toLowerCase().includes('bitcoin')
+            )
+            {return alert("No I won't let you add");}
+            if(
+                action.type===ADD_GOAL&&
+                action.goal.title.toLowerCase().includes('bitcoin')
+            )
+            {return alert("No I won't let you add");}
+            else store.dispatch(action);
+        }
         let store = Redux.createStore(Redux.combineReducers({
             todos,
             goals
@@ -112,7 +124,7 @@
             const input=document.getElementById('todo');
             const title=input.value;
             input.value=''
-            store.dispatch(addTodoAction({
+            checkAndDispatch(store,addTodoAction({
                 id:generateId(),
                 title,
                 complete:false
@@ -122,7 +134,7 @@
             const input=document.getElementById('goal');
             const title=input.value;
             input.value=''
-            store.dispatch(addGoalAction({
+            checkAndDispatch(store,addGoalAction({
                 id:generateId(),
                 title,
             }));
@@ -141,8 +153,8 @@
             node.appendChild(btn);
             document.getElementById('todos').appendChild(node);
             node.style.textDecoration=todo.complete?'line-through':'none';
-            node.addEventListener('click',()=>{store.dispatch(toggleTodoAction(todo.id))})
-            btn.addEventListener('click',()=>{store.dispatch(removeTodoAction(todo.id))});
+            node.addEventListener('click',()=>{checkAndDispatch(store,toggleTodoAction(todo.id))})
+            btn.addEventListener('click',()=>{checkAndDispatch(store,removeTodoAction(todo.id))});
         }
         function addGoalToDom(goal){
             const node=document.createElement('li');
@@ -152,7 +164,7 @@
             node.appendChild(text); 
             node.appendChild(btn);
             document.getElementById('goals').appendChild(node);
-            btn.addEventListener('click',()=>{store.dispatch(removeGoalAction(goal.id))});
+            btn.addEventListener('click',()=>{checkAndDispatch(store,removeGoalAction(goal.id))});
         }
     </script>
 </body>
